@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import pool from '../db';
-import { authorizeTeacherForStudent } from '../middleware/abac';
-import { getDifferentiallyPrivateAverage } from '../utils/differentialPrivacy';
+import pool from '../db/index.js';
+import { authorizeTeacherForStudent } from '../middleware/abac.js';
+import { getDifferentiallyPrivateAverage } from '../utils/differentialPrivacy.js';
 
 const router = Router();
 

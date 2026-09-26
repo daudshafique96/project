@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import pool from '../db'; // Assuming you set up a pg pool export
+import type { Request, Response, NextFunction } from 'express';
+import pool from '../db/index.js'; // pg pool
 
 export const authorizeTeacherForStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import gradesRouter from './routes/grades.js';
 
 dotenv.config();
 
@@ -25,10 +26,13 @@ const apiLimiter = rateLimit({
 });
 app.use('/api/', apiLimiter);
 
-// Health Check & DP Analytics Stub
-app.get('/api/health', (req, res) => {
+// Health Check
+app.get('/api/health', (_req, res) => {
     res.status(200).json({ status: 'Secure API is running' });
 });
+
+// Routes
+app.use('/api', gradesRouter);
 
 // Start Server
 app.listen(PORT, () => {
