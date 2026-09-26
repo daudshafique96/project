@@ -1,0 +1,39 @@
+name: DevSecOps Pipeline - SMS
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  security-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Backend Dependencies
+        working-directory: ./src/backend
+        run: npm ci
+
+      - name: Run SAST (Semgrep)
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: "p/nodejs"
+          
+      - name: Scan for Hardcoded Secrets (Gitleaks)
+        uses: zricethezav/gitleaks-action@master
+
+      - name: Dependency Vulnerability Check (npm audit)
+        working-directory: ./src/backend
+        run: npm audit --audit-level=high
+
+      - name: Build Backend TypeScript
+        working-directory: ./src/backend
+        run: npx tsc
